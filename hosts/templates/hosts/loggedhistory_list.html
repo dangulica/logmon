@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <legend class="mb-3 pl-5 pb-2">
+        <div class="row">
+            <span class="col-md-3">{{object_list.0.logged.host.ip_address}}</span>
+            <span class="col-md-9">{{object_list.0.logged.host.description}}</span>
+        </div>
+    </legend>
+    <header class="border-bottom row mb-4 pb-2 text-center">
+        <div class="col-md-6">
+            <div class="row mt-2">
+                <strong class="col-md-6">Last checked on</strong>
+                <span class="col-md-6">{{object_list.0.logged.date_checked|date:"H:i:s d.M.Y"}}</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row mt-2">
+                <strong class="col-md-6">Last SSH status</strong>
+                <strong class="col-md-6 text-{% if object_list.0.logged.status == 'OK'  or object_list.0.logged.status == 'IDENTIC FILE' %}success{% else %}danger{% endif %}">
+                    {{object_list.0.logged.status}}
+                </strong>
+            </div>
+        </div>
+    </header>
+    <table class="table table-bordered table-sm table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Host</th>
+                <th class="text-center">Last config saved on</th>
+                <th class="text-center">View last config</th>
+                <th class="text-center">Download last config</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for host in object_list %}
+                <tr>
+                    <td>{{ host.logged.host.ip_address }}</td>
+                    <td class="text-center">{{ host.date|date:"d.M.Y H:i:s" }}</td>
+                    <td class="text-center">
+                        <a target="blank" href="{{host.filelink.url}}">View</a>
+                    </td>
+                    <td class="text-center">
+                        <a href="{{host.filelink.url}}" download>Download</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="col-md-2 ml-auto text-right">
+        <input class="btn btn-outline-secondary btn-sm mt-1 mb-1" type="button" value="Back" onclick="javascript:history.go(-1);">
+    </div>
+
+{% endblock content %}

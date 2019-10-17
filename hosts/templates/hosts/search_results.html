@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+{% extends 'main/base.html' %} 
+
+{% block content %}
+
+    <div class="container">
+            <table class="table table-bordered table-sm table-hover">
+                    <thead class="thead-dark">
+                        <tr class="my-auto text-center">
+                            <th class="my-auto">ID Client</th>
+                            <th>Host</th>
+                            <th>Description</th>
+                            <th>Last ICMP Checked</th>
+                            <th>ICMP</th>
+                            <th class="text-center">Last config saved</th>
+                            <th>Last config</th>
+                            <th>All configs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for host in object_list %}
+                            <tr>
+                                <td>{{host.id_client}}</td>
+                                <td><a class="nav-link custom-link noblu-link" data-toggle="tooltip" title="Click to view host's details" href="{% url 'host-detail' host.id %}">{{ host.ip_address }}</a></td>
+                                <td>{{ host.description }}</td>
+                                <td><a class="nav-link custom-link noblu-link" data-toggle="tooltip" title="Click to PING now" href="{% url 'host-check' host.ip_address %}">{{ host.monitored.date_checked|date:"H:i:s d.M.Y" }}</a></td>
+                                <td class="text-center"><a class="nav-link custom-link noblu-link text-{% if host.monitored.current_state == 'UP' %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Click to view ICMP status changes history" href="{% url 'host-monitored-history' host.id %}">{{ host.monitored.current_state }}</a></td>
+                                <td><a class="nav-link custom-link noblu-link" data-toggle="tooltip" title="Click to backup config now" href="{% url 'host-backup' host.ip_address %}">{{ host.logged.date_checked|date:"H:i:s d.M.Y" }}</a></td>
+                                <td class="text-center">
+                                    {% if host.first_config != '#' %}
+                                        <a class="nav-link custom-link" target="blank" href="{{ host.first_config }}">View</a>
+                                    {% else %}
+                                         N/A
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if host.first_config != '#' %}
+                                        <a class="nav-link custom-link" href="{% url 'host-logged-history' host.id %}">History</a>
+                                    {% else %}
+                                         N/A
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        <button class="btn btn-sm btn-outline-secondary float-right" type="button" onclick="javascript:history.go(-1);">Back</button>
+    </div>
+
+{% endblock content %}

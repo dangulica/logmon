@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Edit Host {{host.ip_address}}</legend>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {{ h_form.ip_address|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ h_form.id_client|as_crispy_field }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                                {{ h_form.hostname|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ h_form.description|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 align-self-center">
+                            {{ h_form.is_monitored|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4 align-self-center">
+                            {{ m_form.email_notification|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ m_form.m_saves|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 align-self-center">
+                            {{ h_form.is_logged|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ l_form.l_saves|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ h_form.vendor|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ l_form.ssh_username|as_crispy_field }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ l_form.ssh_password|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <button class="btn btn-outline-secondary" type="button" onclick="javascript:history.go(-1);">Cancel</button>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <button class="btn btn-outline-success" type="submit">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock content %}

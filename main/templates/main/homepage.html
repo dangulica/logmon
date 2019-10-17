@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% extends 'main/base.html' %} 
+
+{% block content %}
+    
+    <div >
+        {% if user.is_authenticated %}
+            <h1 class="display-4">Hello {{user.username}}.</h1> 
+            <p class="lead mt-5">You can now add or edit hosts, view existing hosts and specificaly monitor or save configs</p>
+            <p class="lead">Check out the links in the navigation bar or the FAQ page.</p>
+        {% else %}
+            <h1 class="display-4">Hello stranger</h1>
+            <p class="lead mt-5">You are not logged in. You can only view existing hosts and their history, but cannot monitor or save configs at this moment</p> 
+            <p class="lead">You must <strong><a class="nav-link custom-link" href="{% url 'login' %}">login</a></strong> to add or edit hosts and access all functionality of this application</p>
+            <p class="lead">If you don't have an account, you can <strong><a class="nav-link custom-link" href="{% url 'register' %}">register</a></strong> here</p>
+        {% endif %}
+    </div>
+
+{% endblock content %}

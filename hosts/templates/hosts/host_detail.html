@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+
+{% extends 'main/base.html' %} 
+
+{% block content %}
+
+    <div class="container content-section">
+        <legend class="border-bottom mb-4 pl-5 pb-2">{{object.ip_address}}</legend>
+        <div class="row mt-2">
+            <div class="col-md-2 my-auto text-center">
+                <div class="row">
+                    <strong class="col">ID Client</strong>
+                </div>
+                <div class="row">
+                    <span class="col">{{object.id_client}}</span>
+                </div>
+            </div>
+            <div class="col-md-4 my-auto text-center">
+                <div class="row">
+                    <strong class="col">Hostname</strong>
+                </div>
+                <div class="row">
+                    <span class="col">{{object.hostname}}</span>
+                </div>
+            </div>
+            <div class="col-md-4 my-auto text-center">
+                <div class="row">
+                    <strong class="col">Description</strong>
+                </div>
+                <div class="row">
+                    <span class="col">{{object.description}}</span>
+                </div>
+            </div>
+            <div class="col-md-2 my-auto text-center">
+                <div class="row">
+                    <strong class="col">Added by</strong>
+                </div>
+                <div class="row">
+                    <span class="col">{{object.owner}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col">
+                        <strong>ICMP Monitoring</strong>
+                        <span>
+                            {% if object.is_monitored %}
+                                <strong class="pl-4 text-success">Active</strong>
+                            {% else %}
+                                <strong class="pl-4 text-danger">Inactive</strong>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <strong class="col-md-6">Email Notify</strong>
+                    <div class="col-md-6">
+                        {% if object.monitored.email_notification %}
+                            <strong class="text-success">YES</strong>
+                        {% else %}
+                            <strong class="text-danger">NO</strong>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Last checked on</strong>
+                    <span class="col-md-6">{{object.monitored.date_checked|date:"H:i:s d.M.Y"}}</span>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">ICMP status</strong>
+                    <strong class="col-md-6 text-{% if object.monitored.current_state == 'UP' %}success{% else %}danger{% endif %}">
+                        {{object.monitored.current_state}}
+                    </strong>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">ICMP check</strong>
+                    <strong class="col-md-6"><a class="nav-link custom-link" href="{% url 'host-check' object.ip_address %}">PING now</a></strong>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Status changes saved</strong>
+                    <span class="col-md-6">{{object.monitored.m_saves}}</span>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Staus changes history</strong>
+                    <strong class="col-md-6"><a class="nav-link custom-link" href="{% url 'host-monitored-history' object.id %}">View History</a></strong>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col">
+                        <strong>Backup Config by SSH</strong>
+                        <span>
+                            {% if object.is_logged %}
+                                <strong class="pl-4 text-success">Active</strong>
+                            {% else %}
+                                <strong class="pl-4 text-danger">Inactive</strong>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <strong class="col-md-6">Model</strong>
+                    <span class="col-md-6">{{object.vendor}}</span>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Last checked on</strong>
+                    <span class="col-md-6">{{object.logged.date_checked|date:"H:i:s d.M.Y"}}</span>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Last SSH status</strong>
+                    <strong class="col-md-6 text-{% if object.logged.status == 'OK'  or object.logged.status == 'IDENTIC FILE' %}success{% else %}danger{% endif %}">
+                        {{object.logged.status}}
+                    </strong>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Backup config</strong>
+                    <strong class="col-md-6"><a class="nav-link custom-link" href="{% url 'host-backup' object.ip_address %}">Backup now</a></strong>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Config files saved</strong>
+                    <span class="col-md-6">{{object.logged.l_saves}}</span>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Config files history</strong>
+                    {% if object.first_config != '#' %}
+                        <strong class="col-md-6"><a class="nav-link custom-link" href="{% url 'host-logged-history' object.id %}">View History</a></strong>
+                    {% else %}
+                        <strong class="col-md-6 text-danger">N/A</strong>
+                    {% endif %}
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Last config saved on</strong>
+                    <span class="col-md-6">{{object.logged.date_updated|date:"H:i:s d.M.Y"}}</span>
+                </div>
+                <div class="row mt-2">
+                    <strong class="col-md-6">Last config file</strong>
+                    {% if object.first_config != '#' %}
+                        <strong class="col-md-6"><a class="nav-link custom-link" target="blank" href="{{ object.first_config }}">View Config</a></strong>
+                    {% else %}
+                        <strong class="col-md-6 text-danger">N/A</strong>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 border-top pt-3">
+            <div class="col-md-2"></div>
+            {% if object.owner == user %}
+                <div class="col-md-4 text-right">
+                    <a class="btn btn-outline-secondary btn-sm mt-1 mb-1" href="{% url 'host-edit' object.id %}">Edit</a>
+                </div>
+                <div class="col-md-4">
+                    <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'host-delete' object.id %}">Delete</a>
+                </div>
+            {% endif %}
+            <div class="col-md-2 ml-auto text-right">
+                <input class="btn btn-outline-secondary btn-sm mt-1 mb-1" type="button" value="Back" onclick="javascript:history.go(-1);">
+            </div>
+        </div>  
+    </div>
+
+{% endblock content %}
