@@ -19,14 +19,14 @@
                         <a class="nav-link" href="{% url 'faq-page' %}">FAQ</a>
                     </li>
                     {% if user.is_authenticated %}
-                        <li>
+                        <li class="nav-item {% if url_name == 'host-new' %} active {% endif %}">
                             <a class="nav-link" href="{% url 'host-new' %}">New Host</a>
                         </li>
-                        <li>
+                        <li class="nav-item {% if url_name == 'hosts-own' %} active {% endif %}">
                             <a class="nav-link" href="{% url 'hosts-own' %}">My Hosts</a>
                         </li>
                     {% endif %}
-                    <li class="nav-item {% if url_name == 'host-list' %} active {% endif %}">
+                    <li class="nav-item {% if url_name == 'hosts-list' %} active {% endif %}">
                         <a class="nav-link" href="{% url 'hosts-list' %}">All Hosts</a>
                     </li>
                 {% endwith %}
@@ -60,10 +60,6 @@
                     {% endif %}
                 {% endwith %}
             </ul>
-            <!-- <form class="form-inline ml-auto" action="#">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-warning" type="submit">Search</button>
-            </form> -->
         </div>
     </div>
 </nav>

@@ -10,8 +10,6 @@ from modules.scriptutils import monitor_host, log_host
 from .models import Host, Monitored, MonitoredHistory, Logged, LoggedHistory
 from .forms import HostForm, MonitoredForm, LoggedForm
 
-# from django.urls import reverse
-
 # Create your views here.
 
 
@@ -20,12 +18,6 @@ class HostsListView(ListView):
     # template_name = 'hosts/hosts_view.html'  # <app>/<model>_<viewtype>.html
     ordering = ["-date_created"]
     paginate_by = 20
-
-    # def get_paginate_by(self, queryset):
-    #     """
-    #     Paginate by specified value in querystring, or use default class property value.
-    #     """
-    #     return self.request.GET.get('by', self.paginate_by)
 
 
 class OwnHostsListView(HostsListView):
@@ -49,32 +41,20 @@ class SearchResultsView(ListView):
             Q(ip_address__icontains=query)
             | Q(id_client__icontains=query)
             | Q(description__icontains=query)
+            | Q(hostname__icontains=query)
             | Q(vendor__icontains=query)
-        )
+        ).order_by("-date_created")
         return object_list
-
-    # def get_paginate_by(self, queryset):
-    #     """
-    #     Paginate by specified value in querystring, or use default class property value.
-    #     """
-    #     return self.request.GET.get('by', self.paginate_by)
 
 
 class MonitoredHistoryListView(ListView):
     model = MonitoredHistory
-    # template_name = 'hosts/hosts_monitored_history.html'
     ordering = ["-date"]
     paginate_by = 20
 
     def get_queryset(self):
         obj = get_object_or_404(Monitored, host=self.kwargs.get("pk"))
         return MonitoredHistory.objects.filter(monitored=obj).order_by("-date")
-
-    # def get_paginate_by(self, queryset):
-    #     """
-    #     Paginate by specified value in querystring, or use default class property value.
-    #     """
-    #     return self.request.GET.get('by', self.paginate_by)
 
 
 class LoggedHistoryListView(ListView):
@@ -85,12 +65,6 @@ class LoggedHistoryListView(ListView):
     def get_queryset(self):
         obj = get_object_or_404(Logged, host=self.kwargs.get("pk"))
         return LoggedHistory.objects.filter(logged=obj).order_by("-date")
-
-    # def get_paginate_by(self, queryset):
-    #     """
-    #     Paginate by specified value in querystring, or use default class property value.
-    #     """
-    #     return self.request.GET.get('by', self.paginate_by)
 
 
 @login_required
@@ -190,7 +164,6 @@ def check(request, ipaddress):
             f"Info email has not been sent, {smtp_message}",
             extra_tags="danger",
         )
-    # return redirect("hosts-list")
     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 

@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
-# from django.dispatch.dispatcher import receiver
-# from django.db.models.signals import pre_delete
 
 # Create your models here.
 
@@ -36,8 +34,6 @@ class Host(models.Model):
     def __str__(self):
         return self.ip_address
 
-    # def get_absolute_url(self):
-    #     return reverse('post-detail', kwargs={'pk': self.pk})
     def get_absolute_url(self):
         return reverse("home-page")
 
