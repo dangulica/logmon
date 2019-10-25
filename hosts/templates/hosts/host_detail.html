@@ -12,7 +12,7 @@
                     <strong class="col">ID Client</strong>
                 </div>
                 <div class="row">
-                    <span class="col">{{object.id_client}}</span>
+                    <span class="col"><a class="nav-link custom-link noblu-link" href="{% url 'search_results' %}?q={{object.id_client}}">{{object.id_client}}</a></span>
                 </div>
             </div>
             <div class="col-md-4 my-auto text-center">
