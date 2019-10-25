@@ -5,7 +5,7 @@
 {% block content %}
     <legend class="mb-3 pl-5 pb-2">
         <div class="row">
-            <span class="col-md-3">{{object_list.0.monitored.host.ip_address}}</span>
+            <span class="col-md-3"><a class="nav-link custom-link noblu-link" href="{% url 'host-detail' object_list.0.monitored.host.id %}">{{object_list.0.monitored.host.ip_address}}</a></span>
             <span class="col-md-9">{{object_list.0.monitored.host.description}}</span>
         </div>
     </legend>
