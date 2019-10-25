@@ -2,6 +2,8 @@
 
 {% extends 'main/base.html' %}
 
+{% load hoststags %}
+
 {% block content %}
     <legend class="mb-3 pl-5 pb-2">
         <div class="row">
@@ -18,7 +20,8 @@
         </div>
         <div class="col-md-6">
             <div class="row mt-2">
-                <strong class="col-md-6"><a class="nav-link custom-link" href="{% url 'host-check' object_list.0.monitored.host.ip_address %}">PING now</a></strong>
+                <span class="col-md-9 text-center text-{% if object_list.0.state == 'UP' %}success{% else %}danger{% endif %}"><strong>{{ object_list.0.state }}</strong> for {{ object_list.0.date|timesince:object_list.0.monitored.date_checked }}</span>
+                <strong class="col-md-3"><a class="nav-link custom-link" href="{% url 'host-check' object_list.0.monitored.host.ip_address %}">PING now</a></strong>
             </div>
         </div>
     </header>
@@ -28,15 +31,27 @@
                 <th>Host</th>
                 <th class="text-center">Status changed on</th>
                 <th class="text-center">State</th>
+                <th class="text-center">Duration</th>
             </tr>
         </thead>
         <tbody>
             {% for host in object_list %}
+                <!-- get the older element (next in the list)-->
+                {% with older_host=object_list|next:forloop.counter0 %}
+                <!-- get the newer element (previous in the list) -->
+                {% with newer_host=object_list|previous:forloop.counter0 %}
                 <tr>
                     <td>{{ host.monitored.host.ip_address }}</td>
                     <td class="text-center">{{ host.date|date:"d.M.Y H:i:s" }}</td>
                     <td class="text-center text-{% if host.state == 'UP' %}success{% else %}danger{% endif %}"><strong>{{ host.state }}</strong></td>
+                    {% if forloop.counter0 is 0 %}
+                        <td class="text-center">{{ host.date|timesince:host.monitored.date_checked }} and counting ...</td>
+                    {% else %}
+                        <td class="text-center">{{ host.date|timesince:newer_host.date }}</td>
+                    {% endif %}
                 </tr>
+                {% endwith %}
+                {% endwith %}
             {% endfor %}
         </tbody>
     </table>
