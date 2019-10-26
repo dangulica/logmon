@@ -68,6 +68,7 @@ class Monitored(models.Model):
 class MonitoredHistory(models.Model):
     monitored = models.ForeignKey(Monitored, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
+    next_date = models.DateTimeField(default=timezone.now)
     state = models.CharField(
         max_length=4, choices=[("UP", "UP"), ("DOWN", "DOWN")], default="UP"
     )

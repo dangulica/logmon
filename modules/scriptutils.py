@@ -38,13 +38,20 @@ def monitor_host(ipaddress):
         ).order_by("-date")
         if len(qs_monitored_history) < monitored_instance.m_saves:
             monitored_history_new_instance = MonitoredHistory.objects.create(
-                state=checked_state, date=timezone.now(), monitored=monitored_instance
+                state=checked_state,
+                date=timezone.now(),
+                next_date=timezone.now(),
+                monitored=monitored_instance
             )
             monitored_history_new_instance.save()
+            qs_monitored_history[0].next_date = monitored_history_new_instance.date
+            qs_monitored_history[0].save()
         else:
             qs_monitored_history[monitored_instance.m_saves - 1].date = timezone.now()
             qs_monitored_history[monitored_instance.m_saves - 1].state = checked_state
             qs_monitored_history[monitored_instance.m_saves - 1].save()
+            qs_monitored_history[0].next_date = qs_monitored_history[monitored_instance.m_saves - 1].date
+            qs_monitored_history[0].save()
             for i in range(monitored_instance.m_saves, len(qs_monitored_history)):
                 qs_monitored_history[i].delete()
     monitored_instance.save()

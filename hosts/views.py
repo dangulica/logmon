@@ -81,6 +81,7 @@ def host_create_view(request):
             monitored_history = MonitoredHistory.objects.create(
                 state=m_form.instance.current_state,
                 date=timezone.now(),
+                next_date=timezone.now(),
                 monitored=m_form.instance,
             )
             monitored_history.save()
