@@ -71,7 +71,7 @@
                 <div class="row mt-2">
                     <strong class="col-md-6">ICMP status</strong>
                     <strong class="col-md-6 text-{% if object.monitored.current_state == 'UP' %}success{% else %}danger{% endif %}">
-                        {{object.monitored.current_state}}
+                        {{object.monitored.current_state}} for {{ object.monitored.date_updated|timesince:object.monitored.date_checked }}
                     </strong>
                 </div>
                 <div class="row mt-2">
