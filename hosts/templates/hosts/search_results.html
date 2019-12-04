@@ -26,7 +26,13 @@
                                 <td>{{ host.description }}</td>
                                 <td><a class="nav-link custom-link noblu-link" data-toggle="tooltip" title="Click to PING now" href="{% url 'host-check' host.ip_address %}">{{ host.monitored.date_checked|date:"H:i:s d.M.Y" }}</a></td>
                                 <td class="text-center"><a class="nav-link custom-link noblu-link text-{% if host.monitored.current_state == 'UP' %}success{% else %}danger{% endif %}" data-toggle="tooltip" title="Click to view ICMP status changes history" href="{% url 'host-monitored-history' host.id %}">{{ host.monitored.current_state }}</a></td>
-                                <td><a class="nav-link custom-link noblu-link" data-toggle="tooltip" title="Click to backup config now" href="{% url 'host-backup' host.ip_address %}">{{ host.logged.date_checked|date:"H:i:s d.M.Y" }}</a></td>
+                                <td class="text-center">
+                                    {% if host.first_config != '#' %}
+                                        <a class="nav-link custom-link noblu-link" data-toggle="tooltip" title="Click to backup config now" href="{% url 'host-backup' host.ip_address %}">{{ host.logged.date_checked|date:"H:i:s d.M.Y" }}</a>
+                                    {% else %}
+                                        <a class="nav-link custom-link noblu-link" data-toggle="tooltip" title="Click to backup config now" href="{% url 'host-backup' host.ip_address %}">N/A</a>
+                                   {% endif %}
+                                </td>
                                 <td class="text-center">
                                     {% if host.first_config != '#' %}
                                         <a class="nav-link custom-link" target="blank" href="{{ host.first_config }}">View</a>

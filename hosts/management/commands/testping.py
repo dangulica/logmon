@@ -8,7 +8,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         start = time.perf_counter()
-        result = ping('198.18.101.35')
+        result = ping('198.18.101.10')
         finish = time.perf_counter()
         print(f"Finished in {round(finish-start, 2)} second(s)")
         print(result)

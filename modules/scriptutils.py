@@ -16,7 +16,7 @@ def ping(ipaddress):
     pingCountParam = "-n" if platform.system().lower() == "windows" else "-c"
     with open(os.devnull, "w") as devNull:
         ret_code = subprocess.call(
-            ["ping", pingCountParam, "2", "-w 2", ipaddress], stdout=devNull, stderr=devNull
+            ["ping", pingCountParam, "4", "-w 5", ipaddress], stdout=devNull, stderr=devNull
         )
         print("ping done")
         result = True if ret_code == 0 else False

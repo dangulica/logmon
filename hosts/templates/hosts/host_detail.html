@@ -132,7 +132,11 @@
                 </div>
                 <div class="row mt-2">
                     <strong class="col-md-6">Last config saved on</strong>
-                    <span class="col-md-6">{{object.logged.date_updated|date:"H:i:s d.M.Y"}}</span>
+                    {% if object.first_config != '#' %}
+                        <span class="col-md-6">{{object.logged.date_updated|date:"H:i:s d.M.Y"}}</span>
+                    {% else %}
+                        <strong class="col-md-6 text-danger">N/A</strong>
+                    {% endif %}   
                 </div>
                 <div class="row mt-2">
                     <strong class="col-md-6">Last config file</strong>
