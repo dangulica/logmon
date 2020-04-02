@@ -7,7 +7,7 @@ black==19.3b0
 cffi==1.12.3
 Click==7.0
 cryptography==2.7
-Django==2.2.8
+Django==2.2.10
 django-cleanup==4.0.0
 django-crispy-forms==1.7.2
 entrypoints==0.3
